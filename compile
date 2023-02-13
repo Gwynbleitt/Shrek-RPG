@@ -1,0 +1,1 @@
+g++ ../include/glad/glad.c *.cpp  -o ../out/a -I /usr/include/X11  -I ../include/ -I ../headers/ -lglfw  -lX11 -lGL -lGLU -lassimp

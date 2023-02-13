@@ -1,0 +1,15 @@
+RPG based on shrek (2001)
+
+TO DO:
+
+FEATRUES:
+
+1. more textrues
+2. meterial handling class
+3. Specular lighing and normal map imolementation
+3. rig import and animation
+
+BUG FIXES:
+
+1. Investigate mesh::destructor call
+2. fix camera rotation 
