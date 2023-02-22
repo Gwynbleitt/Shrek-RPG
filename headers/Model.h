@@ -3,6 +3,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+#pragma once
+
 class Model
 {
 

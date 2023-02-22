@@ -39,7 +39,6 @@ void Renderer::refresh()
     glClearColor(0.0f, 0.0f, 1.0f, 1.0f);
     
 }
-
 void Renderer::draw(Model& model, Shader& shader, glm::mat4& view, glm::mat4& camera)
 {
 
@@ -48,7 +47,7 @@ void Renderer::draw(Model& model, Shader& shader, glm::mat4& view, glm::mat4& ca
     m_shader->setvec3("lPoint", m_lPoint.Position);
     m_shader->setmat4("MODEL", *(model.m_Mtransfrom));
 
-    
+    const char* name;
 
     for(int i = 0; i < model.m_mesh.size(); i++)
     {
@@ -56,7 +55,7 @@ void Renderer::draw(Model& model, Shader& shader, glm::mat4& view, glm::mat4& ca
         {
             glActiveTexture(GL_TEXTURE0+j);
             glBindTexture(GL_TEXTURE_2D, model.m_mesh[i].m_texture_data[j].id);
-            m_shader->setint1("ALBEDO", j);
+            m_shader->setint1((model.m_mesh[i].m_texture_data[j].type).c_str(), j);
         }
         
     

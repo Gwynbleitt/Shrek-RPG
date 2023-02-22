@@ -1,6 +1,6 @@
 #include "Model.h"
 
-class Character : public Model
+class Character
 {
 
 public:

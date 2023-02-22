@@ -21,6 +21,7 @@ public:
     //clears buffers
     void refresh();
     //draws all meshes of given model
+
     void draw(Model& model, Shader& shader, glm::mat4& view, glm::mat4& camera);
 
     //sets current shader program and reassignes m_shader pointer

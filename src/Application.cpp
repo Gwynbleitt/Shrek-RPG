@@ -17,7 +17,7 @@ void Application::run()
     if(!monitor) exit(EXIT_FAILURE);
     visual = glfwGetVideoMode(monitor);
 
-    WIN = glfwCreateWindow(visual->width, visual->height, "Dank Souls",  NULL, NULL);
+    WIN = glfwCreateWindow(visual->width, visual->height, "TEST",  NULL, NULL);
     if(!WIN) exit(EXIT_FAILURE);
     glfwMakeContextCurrent(WIN);
     glfwSetFramebufferSizeCallback(WIN, s_FB_size_callback);
@@ -25,20 +25,27 @@ void Application::run()
 
     if(!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) exit(EXIT_FAILURE);
 
+    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+
+    glCullFace(GL_FRONT);
 
     Model Shrek;
-    Shrek.LoadModel("../assets/models/Shrek.obj");
+
+
+
+    Shrek.LoadModel("assets/models/Shrek.obj");
     
     //print vertex data
 
-    Shader shader("../shaders/vertex.vs", "../shaders/fragment.fs");
-    glPolygonMode( GL_FRONT_AND_BACK, GL_FILL );
-    glEnable(GL_DEPTH_TEST);
+    Shader shader("shaders/vertex.vs", "shaders/fragment.fs");
+
     glfwSetInputMode(WIN, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
 
     Camera cam1;
     
-    Renderer r1 (*WIN, 90, 0.1f, 5.0f, shader);
+    Renderer r1 (*WIN, 90, 0.1f, 2.0f, shader);
     glfwSetWindowUserPointer(WIN, &r1);
 
     glm::vec3 
@@ -58,7 +65,9 @@ void Application::run()
 
     glfwGetCursorPos(WIN, &cursor_last[0], &cursor_last[1]);
     
-    Shrek.m_mesh[0].LoadTexture("../assets/textures/Shrek/Albedo.jpg", shader, "ALBEDO", GL_RGB);
+    Shrek.m_mesh[0].LoadTexture("assets/textures/Shrek/Albedo.jpg", shader, "ALBEDO", GL_RGB);
+    Shrek.m_mesh[0].LoadTexture("assets/textures/Shrek/Roughness.jpg", shader, "SPECULAR", GL_RGB);
+    Shrek.m_mesh[0].LoadTexture("assets/textures/Shrek/Normal.jpg", shader, "NORMAL", GL_RGB);
 
     //EVENT LOOP 
 

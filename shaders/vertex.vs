@@ -13,23 +13,15 @@ uniform mat4 PROJECTION;
 uniform mat4 VIEW;
 uniform mat4 CAMERA;
 
-//lights
-
-uniform vec3 lPoint;
-
-out vec3 _color;
+out vec3 _Normal;
 out vec2 _TexCoord;
-
-float dot(vec3 a, vec3 b)
-{
-    return a.x*b.x + a.y*b.y + a.z*b.z;
-}
+out vec3 _Camera;
 
 void main()
 {
     gl_Position = PROJECTION * VIEW * CAMERA * MODEL * vec4(aPos, 1.0);
 
     _TexCoord = aTexCoord;
-
-    _color = vec3(dot(aNormal, lPoint)*0.3 + 0.5);
+    _Normal = aNormal;
+    _Camera = normalize(vec3(CAMERA[3][0], CAMERA[3][1], CAMERA[3][2]));
 }
