@@ -2,7 +2,7 @@
 
 Model::Model()
 {
-    m_Mtransfrom = new glm::mat4(1.0f);
+    m_Mtransfrom = glm::mat4(1.0f);
 }
 
 
@@ -41,10 +41,11 @@ Mesh Model::processMesh(aiMesh *mesh, const aiScene *scene)
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
 
-    bool flags[2] = {false, false};
+    bool flags[3] = {false, false, false};
 
     if(mesh->HasNormals()) flags[0] = true;
     if(mesh->mTextureCoords[0]) flags[1] = true;
+    if(mesh->HasBones()) flags[2] = true;
 
     for(unsigned int i = 0; i < mesh->mNumVertices; i++)
     {

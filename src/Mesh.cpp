@@ -1,6 +1,6 @@
 #include "Mesh.h"
 
-Mesh::Mesh(std::vector<Vertex> verticies, std::vector<unsigned int> indicies, int Usage,  bool Vertex_flags[2])
+Mesh::Mesh(std::vector<Vertex> &verticies, std::vector<unsigned int> &indicies, int Usage,  bool Vertex_flags[2])
 {
 
     m_verex_data = verticies;
@@ -20,24 +20,69 @@ Mesh::Mesh(std::vector<Vertex> verticies, std::vector<unsigned int> indicies, in
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
     glEnableVertexAttribArray(0);
-
-    if(Vertex_flags[0])
-    {
-        glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)12);
-        glEnableVertexAttribArray(1);
-    }
-    if(Vertex_flags[1])
-    {
-        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)24);
-        glEnableVertexAttribArray(2);
-    }
+    //assuming vertex flag = 1,1 (to fix)
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)12);
+    glEnableVertexAttribArray(1);
+    
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)24);
+    glEnableVertexAttribArray(2);
+    
 
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
     glBindVertexArray(0);
 
 }
 
+Mesh::Mesh(const Mesh& old)
+{
+    m_verex_data = old.m_verex_data;
+    m_indicies = old.m_indicies;
+    
+    std::cout << "!!!COPY!!!\n";
 
+    glGenVertexArrays(1, &m_VAO);
+    glGenBuffers(1, &m_VBO);
+    glGenBuffers(1, &m_EBO);
+
+    glBindVertexArray(m_VAO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
+    glBufferData(GL_ARRAY_BUFFER, m_verex_data.size() * sizeof(Vertex), &m_verex_data[0], GL_STATIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_indicies.size() * sizeof(unsigned int), &m_indicies[0], GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    //assuming vertex flag = 1,1
+    
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)12);
+    glEnableVertexAttribArray(1);
+  
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)24);
+    glEnableVertexAttribArray(2);
+   
+    
+
+    glBindBuffer(GL_ARRAY_BUFFER, 0); 
+    glBindVertexArray(0);
+
+
+}
+
+Mesh::~Mesh()
+{
+    glDeleteBuffers(1, &(m_VBO));
+    glDeleteBuffers(1, &(m_EBO));
+    glDeleteVertexArrays(1, &(m_VAO));
+    for(int i = 0; i < m_texture_data.size(); i++)
+    {
+        glDeleteTextures(1, &(m_texture_data[i].id));
+    }
+
+    std::cout << "MESH DESTRUCTOR" << '\n';
+}
 
 void Mesh::LoadTexture(const char* path, Shader& shader, const char* type, unsigned int colors)
 {
@@ -70,3 +115,4 @@ void Mesh::LoadTexture(const char* path, Shader& shader, const char* type, unsig
 
 
 }
+

@@ -8,6 +8,7 @@
 #include <assimp/Importer.hpp>
 
 #include "Renderer.h"
+#include "Terminal_stats.h"
 
 
 class Application

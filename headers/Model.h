@@ -14,7 +14,7 @@ protected:
     
 public:
 
-    glm::mat4* m_Mtransfrom;
+    glm::mat4 m_Mtransfrom;
 
     std::vector<Mesh> m_mesh;
     

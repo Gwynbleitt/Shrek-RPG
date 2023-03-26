@@ -12,7 +12,7 @@ Renderer::Renderer(GLFWwindow& win, float FOV, float n, float f,  Shader& shader
     m_near = n;
     m_far = f;
     m_FOV = FOV;
-    m_Mprojection = new glm::mat4(1.0f);
+    m_Mprojection = glm::mat4(1.0f);
 
     m_lPoint = {glm::vec3(0.0f),0.0f};
 
@@ -22,14 +22,9 @@ Renderer::Renderer(GLFWwindow& win, float FOV, float n, float f,  Shader& shader
 
 void Renderer::fb_u(int w, int h)
 {
-    glm::projection(*m_Mprojection, m_FOV, (float)w/h, m_near, m_far);
+    glm::projection(m_Mprojection, m_FOV, (float)w/h, m_near, m_far);
 
-    m_shader->setmat4("PROJECTION", *m_Mprojection);
-}
-
-Renderer::~Renderer()
-{
-    delete m_Mprojection;
+    m_shader->setmat4("PROJECTION", m_Mprojection);
 }
 
 void Renderer::refresh()
@@ -45,8 +40,7 @@ void Renderer::draw(Model& model, Shader& shader, glm::mat4& view, glm::mat4& ca
     m_shader->setmat4("VIEW", view);
     m_shader->setmat4("CAMERA", camera);
     m_shader->setvec3("lPoint", m_lPoint.Position);
-    m_shader->setmat4("MODEL", *(model.m_Mtransfrom));
-
+    m_shader->setmat4("MODEL", model.m_Mtransfrom);
     const char* name;
 
     for(int i = 0; i < model.m_mesh.size(); i++)

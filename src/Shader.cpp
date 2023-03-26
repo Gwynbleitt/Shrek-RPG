@@ -102,4 +102,6 @@ void Shader::use()
 
 Shader::~Shader(){
     glDeleteProgram(m_ID);
+
+    std::cout << "shader des" << '\n';
 }

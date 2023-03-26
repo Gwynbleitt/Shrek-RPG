@@ -6,6 +6,7 @@ void Application::run()
     /* CONSTANT VALUES */
     const float camera_speed = 4.0f;
     const float sensitivity = 0.1f;
+    const float camera_clamp = 0.9f;
     /*------------------*/
 
     if(!glfwInit()) exit(EXIT_FAILURE);
@@ -31,11 +32,15 @@ void Application::run()
 
     glCullFace(GL_FRONT);
 
+    T_Stats Stats;
+
     Model Shrek;
-
-
-
+    std::cout << (&(Shrek.m_mesh[0]) ? "exists" : "doesnt exist") << '\n';
     Shrek.LoadModel("assets/models/Shrek.obj");
+    std::cout << (&(Shrek.m_mesh[0]) ? "exists" : "doesnt exist") << '\n';
+    //update stats
+    Stats.add_model(1);
+    Stats.add_mesh(Shrek.m_mesh.size());
     
     //print vertex data
 
@@ -63,6 +68,10 @@ void Application::run()
     double cursor_last[2];
     double cursor_offset[2];
 
+    double save_pos;
+
+    
+
     glfwGetCursorPos(WIN, &cursor_last[0], &cursor_last[1]);
     
     Shrek.m_mesh[0].LoadTexture("assets/textures/Shrek/Albedo.jpg", shader, "ALBEDO", GL_RGB);
@@ -81,6 +90,9 @@ void Application::run()
         delta_time = current_frame - last_frame;
         last_frame = current_frame;
 
+        //Stats.update(delta_time);
+        //Stats.render();
+
         glfwGetCursorPos(WIN, &cursor_pos[0], &cursor_pos[1]);
 
         cursor_offset[0] = cursor_pos[0]-cursor_last[0];
@@ -89,13 +101,14 @@ void Application::run()
         cursor_last[0] = cursor_pos[0];
         cursor_last[1] = cursor_pos[1];
 
-        rotation.x += cursor_offset[1] * sensitivity * delta_time;
-        rotation.z -= cursor_offset[0] * sensitivity * delta_time;
+        
 
         speed = camera_speed * delta_time;
 
         //CAMERA HANDLING
 
+        rotation.x += cursor_offset[1] * sensitivity * delta_time;
+        rotation.z -= cursor_offset[0] * sensitivity * delta_time;
         glm::rotate(direction2d, direction, rotation);
 
         direction2d = glm::normalize(direction2d);
@@ -157,7 +170,7 @@ void Application::s_KEY_callback(GLFWwindow* window, int key, int scancode, int 
     if(action==1) switch(key){
         case GLFW_KEY_ESCAPE:
         case GLFW_KEY_Q:
-            exit(EXIT_FAILURE);
+            glfwSetWindowShouldClose(window, GLFW_TRUE);
             break;
         default: break;
     }

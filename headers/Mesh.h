@@ -23,8 +23,11 @@ public:
     //generates texture from file using STB library
     void LoadTexture(const char* path, Shader& shader, const char* type, unsigned int colors);
 
-    //construct mesh object based on vertrx data, index data and usage. Sets up all necessery buffers
-    Mesh(std::vector<Vertex> verticies, std::vector<unsigned int> indicies, int Usage, bool Vertex_flags[2]);
-
+    //1. construct mesh object based on vertrx data, index data and usage. Sets up all necessery buffers
+    Mesh(std::vector<Vertex> &verticies, std::vector<unsigned int> &indicies, int Usage, bool Vertex_flags[2]);
+    //2. copy operator
+    Mesh(const Mesh& tmp); 
+    ~Mesh();
+  
 
 };

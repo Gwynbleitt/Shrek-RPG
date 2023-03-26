@@ -6,7 +6,7 @@
 class Renderer
 {
 
-    glm::mat4* m_Mprojection;
+    glm::mat4 m_Mprojection;
     
     float m_near, m_far, m_FOV;
 
@@ -28,6 +28,5 @@ public:
     void setshader(Shader& shader);
 
     Renderer(GLFWwindow& win, float FOV, float n, float f, Shader& shader);
-    ~Renderer();
 
 };
