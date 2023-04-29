@@ -45,11 +45,20 @@ void Renderer::draw(Model& model, Shader& shader, glm::mat4& view, glm::mat4& ca
 
     for(int i = 0; i < model.m_mesh.size(); i++)
     {
+
+        m_shader->setmat4("MESH", model.m_mesh[i].m_Mtransfrom);
+
         for(int j = 0; j < model.m_mesh[i].m_texture_data.size(); j++)
         {
             glActiveTexture(GL_TEXTURE0+j);
             glBindTexture(GL_TEXTURE_2D, model.m_mesh[i].m_texture_data[j].id);
-            m_shader->setint1((model.m_mesh[i].m_texture_data[j].type).c_str(), j);
+            switch(model.m_mesh[i].m_texture_data[j].type)
+            {
+                case 0: m_shader->setint1("ALBEDO", j); break;
+                case 1: m_shader->setint1("SPECULAR", j); break;
+                case 2: m_shader->setint1("NORMAL", j); break;
+                default: printf("INCORRECT TEXTURE TYPE"); break;
+            }
         }
         
     

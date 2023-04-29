@@ -35,14 +35,15 @@ void Application::run()
     T_Stats Stats;
 
     Model Shrek;
-    std::cout << (&(Shrek.m_mesh[0]) ? "exists" : "doesnt exist") << '\n';
-    Shrek.LoadModel("assets/models/Shrek.obj");
-    std::cout << (&(Shrek.m_mesh[0]) ? "exists" : "doesnt exist") << '\n';
-    //update stats
-    Stats.add_model(1);
-    Stats.add_mesh(Shrek.m_mesh.size());
+
+    for(int i = 0; i < 10; i++)
+    {
+        Shrek.LoadModel("assets/models/Shrek.obj");  
+        glm::translate(Shrek.m_mesh[i].m_Mtransfrom, glm::vec3(i*1.0f, 0.0f, 0.0f));
+    }
+
     
-    //print vertex data
+
 
     Shader shader("shaders/vertex.vs", "shaders/fragment.fs");
 
@@ -74,9 +75,9 @@ void Application::run()
 
     glfwGetCursorPos(WIN, &cursor_last[0], &cursor_last[1]);
     
-    Shrek.m_mesh[0].LoadTexture("assets/textures/Shrek/Albedo.jpg", shader, "ALBEDO", GL_RGB);
-    Shrek.m_mesh[0].LoadTexture("assets/textures/Shrek/Roughness.jpg", shader, "SPECULAR", GL_RGB);
-    Shrek.m_mesh[0].LoadTexture("assets/textures/Shrek/Normal.jpg", shader, "NORMAL", GL_RGB);
+    Shrek.m_mesh[0].LoadTexture("assets/textures/Shrek/Albedo.jpg", ALBEDO, GL_RGB);
+    Shrek.m_mesh[0].LoadTexture("assets/textures/Shrek/Roughness.jpg", SPECULAR, GL_RGB);
+    Shrek.m_mesh[0].LoadTexture("assets/textures/Shrek/Normal.jpg", NORMAL, GL_RGB);
 
     //EVENT LOOP 
 

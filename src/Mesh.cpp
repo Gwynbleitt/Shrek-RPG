@@ -31,14 +31,15 @@ Mesh::Mesh(std::vector<Vertex> &verticies, std::vector<unsigned int> &indicies, 
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
     glBindVertexArray(0);
 
-}
+    m_Mtransfrom = glm::mat4(1.0f);
 
-Mesh::Mesh(const Mesh& old)
+}
+//correct copying behavior
+Mesh::Mesh(const Mesh& tmp)
 {
-    m_verex_data = old.m_verex_data;
-    m_indicies = old.m_indicies;
-    
-    std::cout << "!!!COPY!!!\n";
+    m_verex_data = tmp.m_verex_data;
+    m_indicies = tmp.m_indicies;
+    m_Mtransfrom = tmp.m_Mtransfrom;
 
     glGenVertexArrays(1, &m_VAO);
     glGenBuffers(1, &m_VBO);
@@ -62,8 +63,6 @@ Mesh::Mesh(const Mesh& old)
   
     glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)24);
     glEnableVertexAttribArray(2);
-   
-    
 
     glBindBuffer(GL_ARRAY_BUFFER, 0); 
     glBindVertexArray(0);
@@ -73,46 +72,20 @@ Mesh::Mesh(const Mesh& old)
 
 Mesh::~Mesh()
 {
-    glDeleteBuffers(1, &(m_VBO));
-    glDeleteBuffers(1, &(m_EBO));
-    glDeleteVertexArrays(1, &(m_VAO));
-    for(int i = 0; i < m_texture_data.size(); i++)
-    {
-        glDeleteTextures(1, &(m_texture_data[i].id));
-    }
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+ 
+    if(m_VBO) glDeleteBuffers(1, &(m_VBO));
+    if(m_EBO) glDeleteBuffers(1, &(m_EBO));
+    if(m_VAO) glDeleteVertexArrays(1, &(m_VAO));
 
     std::cout << "MESH DESTRUCTOR" << '\n';
 }
 
-void Mesh::LoadTexture(const char* path, Shader& shader, const char* type, unsigned int colors)
+void Mesh::LoadTexture(const char* path, unsigned int type, unsigned int colors)
 {
-
-    Texture tmp;
-
-    glGenTextures(1, &tmp.id);
-    glBindTexture(GL_TEXTURE_2D, tmp.id);
-
-    tmp.type = type;
-
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);	
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     
-
-    int width, height, channels;
-
-    unsigned char* data = stbi_load(path, &width, &height, &channels, 0);
-    if(!data) exit(EXIT_FAILURE);
-
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, colors, GL_UNSIGNED_BYTE, data);
-
-    glGenerateMipmap(GL_TEXTURE_2D);
-     
-    m_texture_data.push_back(tmp);
-
-    stbi_image_free(data);
-
+    m_texture_data.push_back(Texture(type, path, colors));
 
 }
 

@@ -21,7 +21,7 @@ bool Shader::SHADER_ERROR_CHECK(unsigned int id, bool type){
     else     glGetShaderiv(id, GL_COMPILE_STATUS, &success);
 
     if(!success) {
-        glGetShaderInfoLog(id, 512, NULL, log);
+        glGetShaderInfoLog(id, 512, nullptr, log);
         if(type) printf("SHADER PROGRAM LINKING ERROR\n%s\n",log);
         else     printf("SHADER COMPILATION ERROR\n%s\n",log);
     }
@@ -37,14 +37,14 @@ Shader::Shader(const std::string& vs_path, const std::string& fs_path){
     const char* shadersrc = tmp.c_str();
 
     vertexshader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexshader, 1, &shadersrc, NULL);
+    glShaderSource(vertexshader, 1, &shadersrc, nullptr);
     glCompileShader(vertexshader);
 
     tmp = read_shader(fs_path);
     shadersrc = tmp.c_str();
 
     fragmentshader = glCreateShader(GL_FRAGMENT_SHADER);
-    glShaderSource(fragmentshader, 1, &shadersrc, NULL);
+    glShaderSource(fragmentshader, 1, &shadersrc, nullptr);
     glCompileShader(fragmentshader);
 
     if(!(SHADER_ERROR_CHECK(vertexshader,SHADER)&&SHADER_ERROR_CHECK(fragmentshader,SHADER))) exit(EXIT_FAILURE);

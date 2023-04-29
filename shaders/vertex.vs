@@ -9,6 +9,7 @@ layout (location=2) in vec2 aTexCoord;
 //matricies
 
 uniform mat4 MODEL;
+uniform mat4 MESH;
 uniform mat4 PROJECTION;
 uniform mat4 VIEW;
 uniform mat4 CAMERA;
@@ -19,7 +20,7 @@ out vec3 _Camera;
 
 void main()
 {
-    gl_Position = PROJECTION * VIEW * CAMERA * MODEL * vec4(aPos, 1.0);
+    gl_Position = PROJECTION * VIEW * CAMERA * MESH * MODEL * vec4(aPos, 1.0);
 
     _TexCoord = aTexCoord;
     _Normal = aNormal;

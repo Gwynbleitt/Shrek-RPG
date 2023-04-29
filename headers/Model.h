@@ -2,6 +2,7 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
+#include "Animation.h"
 
 #pragma once
 
@@ -24,6 +25,8 @@ public:
     
     void processNode(aiNode *node, const aiScene *scene);
     Mesh processMesh(aiMesh *mesh, const aiScene *scene);
+
+    void PlayAnim(Animation Anim, bool Loop);
 
     Model();
 };

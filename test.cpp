@@ -18,10 +18,17 @@ public:
         std::cout << "destructor called\n";
     }
 
-    Person(const Person& f)
+   
+
+    Person(Person&& move)
     {
-       m_name = new std::string(*(f.m_name));
-       m_age = new int(*(f.m_age)); 
+        m_name = move.m_name;
+        m_age = move.m_age;
+
+        move.m_age = nullptr;
+        move.m_name = nullptr;
+
+        std::cout << "move\n";
     }
 
     void print()
@@ -73,11 +80,6 @@ public:
     }
 };
 
-
-Person proccess_person()
-{
-    return Person("stas", 16);
-}
 int main()
 {
 

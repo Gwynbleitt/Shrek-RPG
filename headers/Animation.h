@@ -2,7 +2,7 @@
 #include <vector>
 
 
-struct keyFrame
+struct KeyFrame
 {
 
     float time;
@@ -12,10 +12,11 @@ struct keyFrame
     glm::vec3 scale;
 };
 
-class Animator
+class  Animation
 {
-    std::vector<keyFrame> m_KeyFrames;
 
-    void LoadAnimation();
+    std::vector<KeyFrame> m_keyframes;
+
+    void add(KeyFrame key);
+
 };
-
